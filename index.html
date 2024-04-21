@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Adventure Game</title>
+    <!-- You can include any additional CSS or styles here -->
+</head>
+<body>
+    <h1>Text Adventure Game</h1>
+    <div id="game-container">
+        <!-- This is where the game output will be displayed -->
+    </div>
+
+    <!-- Input field and button for user input -->
+    <div>
+        <input type="text" id="user-input" placeholder="Enter your move">
+        <button id="submit-btn">Submit</button>
+    </div>
+
+    <script>
+        // Room object
+        const rooms = {
+            "Water Treatment Plant": { items: '', east: "Sewer Control Room" },
+            "Sewer Control Room": { items: "map", north: "Maintenance Closet", east: "Septic Tank", west: "Water Treatment Plant", south: "Pump Room" },
+            "Storage Chamber": { items: "hazmat suit", east: "Maintenance Closet" },
+            "Maintenance Closet": { items: "flashlight", west: "Storage Chamber", south: "Sewer Control Room" },
+            "Pump Room": { items: "rat-beating stick", north: "Sewer Control Room", east: "Ventilation Shaft" },
+            "Ventilation Shaft": { items: "gas mask", west: "Pump Room" },
+            "Septic Tank": { items: "wedge of cheese", north: "Rat King's Hideout", west: "Sewer Control Room" },
+            "Rat King's Hideout": { items: '' }
+        };
+
+        // Player Inventory
+        let inventory = [];
+
+        // Starting Room
+        let currentRoom = "Water Treatment Plant";
+
+        // Function to show instructions
+        function showInstructions() {
+            updateGameStatus("----------------------------------------------------");
+            updateGameStatus("Chicago Sewer Text Adventure Game");
+            updateGameStatus("Collect 6 items before you face off with the Rat King, or be defeated by him.");
+            updateGameStatus("Move commands: go South, go North, go East, go West");
+            updateGameStatus("Add to Inventory: get 'item name'");
+            updateGameStatus("----------------------------------------------------");
+            updateGameStatus("You are in the " + currentRoom);
+        }
+
+        // Function to update game status in the game-container div
+        function updateGameStatus(message) {
+            const gameContainer = document.getElementById("game-container");
+            const paragraph = document.createElement("p");
+            paragraph.textContent = message;
+            gameContainer.appendChild(paragraph);
+        }
+
+        // Function to get new state based on direction
+        function getNewState(directionToGo, playerRoom) {
+            if (directionToGo in rooms[playerRoom]) {
+                return rooms[playerRoom][directionToGo];
+            } else {
+                updateGameStatus("Invalid direction.");
+                return playerRoom;
+            }
+        }
+
+        // Function to get item in room
+        function getItem(itemToPickUp, playerRoom) {
+            if ('items' in rooms[currentRoom]) {
+                if (itemToPickUp === rooms[playerRoom]['items']) {
+                    inventory.push(itemToPickUp); // Add item to inventory
+                    delete rooms[playerRoom]['items']; // Remove item from room
+                    updateGameStatus("You picked up the " + itemToPickUp);
+                } else {
+                    updateGameStatus("That Item Is not in this room.");
+                }
+            } else {
+                updateGameStatus("That Item Is not in this room.");
+            }
+        }
+
+        // Function to show status
+        function showStatus() {
+            updateGameStatus("You are in the " + currentRoom);
+            // Print the item if it exists
+            if ('items' in rooms[currentRoom]) {
+                const itemInRoom = rooms[currentRoom]['items'];
+                updateGameStatus("You see a " + itemInRoom);
+            } else {
+                updateGameStatus("There are no items in this room!");
+            }
+            // Print inventory
+            updateGameStatus('Inventory: ' + inventory.join(', '));
+            // Print available directions
+            const availableDirections = Object.keys(rooms[currentRoom]).filter(direction => direction !== 'items');
+            updateGameStatus("Available directions: " + availableDirections.join(', '));
+            updateGameStatus('-----------------');
+        }
+
+        // Function to handle player input
+        function handleInput() {
+            const input = document.getElementById("user-input").value.trim().toLowerCase().split(' ');
+
+            if (input.length === 2 && (input[0] === 'go' || input[0] === 'get')) {
+                // Check if the action is to move
+                if (input[0] === 'go') {
+                    const directionFromUser = input[1];
+                    currentRoom = getNewState(directionFromUser, currentRoom);
+                }
+
+                // Check if the action is to get an item
+                else if (input[0] === 'get') {
+                    const itemName = input[1];
+                    getItem(itemName, currentRoom);
+                }
+
+                // Clear the input field after handling input
+                document.getElementById("user-input").value = "";
+
+                // Clear game container to update with new status
+                document.getElementById("game-container").innerHTML = "";
+
+                // Show updated game status
+                showInstructions();
+                showStatus();
+            } else {
+                updateGameStatus("Invalid input. Please enter a valid command.");
+            }
+        }
+
+        // Show instructions when the page loads
+        showInstructions();
+
+        // Add event listener to handle user input
+        document.getElementById("submit-btn").addEventListener("click", handleInput);
+
+        // Add event listener to handle Enter key press
+        document.getElementById("user-input").addEventListener("keypress", function(event) {
+            if (event.key === 'Enter') {
+                handleInput();
+            }
+        });
+    </script>
+</body>
+</html>
