@@ -121,8 +121,11 @@
 
                 // Clear game container to update with new status
                 document.getElementById("game-container").innerHTML = "";
-                if (currentRoom === "Rat King's Hideout") {
-                    updateGameStatus("Game Over");
+                if (currentRoom === "Rat King's Hideout" && inventory.length !== 6) {
+                    updateGameStatus("Game Over you didnt collect all the items before facing off with the rat king.");
+                }
+                else if (currentRoom === "Rat King's Hideout" && inventory.length === 6){
+                    updateGameStatus("You collected all the Items and defeated the rat king!");
                 }else{
                     // Show updated game status
                     showStatus();
