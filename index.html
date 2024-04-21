@@ -21,14 +21,14 @@
     <script>
         // Room object
         const rooms = {
-            "Water Treatment Plant": { items: '', east: "Sewer Control Room" },
+            "Water Treatment Plant": { east: "Sewer Control Room" },
             "Sewer Control Room": { items: "map", north: "Maintenance Closet", east: "Septic Tank", west: "Water Treatment Plant", south: "Pump Room" },
             "Storage Chamber": { items: "hazmat-suit", east: "Maintenance Closet" },
             "Maintenance Closet": { items: "flashlight", west: "Storage Chamber", south: "Sewer Control Room" },
             "Pump Room": { items: "stick", north: "Sewer Control Room", east: "Ventilation Shaft" },
             "Ventilation Shaft": { items: "mask", west: "Pump Room" },
             "Septic Tank": { items: "cheese", north: "Rat King's Hideout", west: "Sewer Control Room" },
-            "Rat King's Hideout": { items: '' }
+            "Rat King's Hideout": {}
         };
 
         // Player Inventory
@@ -45,6 +45,7 @@
             updateGameStatus("Move commands: go South, go North, go East, go West");
             updateGameStatus("Add to Inventory: get 'item name'");
             updateGameStatus("----------------------------------------------------");
+            showStatus()
         }
 
         // Function to update game status in the game-container div
@@ -120,10 +121,13 @@
 
                 // Clear game container to update with new status
                 document.getElementById("game-container").innerHTML = "";
+                if (currentRoom === "Rat King's Hideout") {
+                    updateGameStatus("Game Over");
+                }else{
+                    // Show updated game status
+                    showStatus();
+                }
 
-                // Show updated game status
-                showInstructions();
-                showStatus();
             } else {
                 updateGameStatus("Invalid input. Please enter a valid command.");
             }
