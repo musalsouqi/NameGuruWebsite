@@ -23,11 +23,11 @@
         const rooms = {
             "Water Treatment Plant": { items: '', east: "Sewer Control Room" },
             "Sewer Control Room": { items: "map", north: "Maintenance Closet", east: "Septic Tank", west: "Water Treatment Plant", south: "Pump Room" },
-            "Storage Chamber": { items: "hazmat suit", east: "Maintenance Closet" },
+            "Storage Chamber": { items: "hazmat-suit", east: "Maintenance Closet" },
             "Maintenance Closet": { items: "flashlight", west: "Storage Chamber", south: "Sewer Control Room" },
-            "Pump Room": { items: "rat-beating stick", north: "Sewer Control Room", east: "Ventilation Shaft" },
-            "Ventilation Shaft": { items: "gas mask", west: "Pump Room" },
-            "Septic Tank": { items: "wedge of cheese", north: "Rat King's Hideout", west: "Sewer Control Room" },
+            "Pump Room": { items: "stick", north: "Sewer Control Room", east: "Ventilation Shaft" },
+            "Ventilation Shaft": { items: "mask", west: "Pump Room" },
+            "Septic Tank": { items: "cheese", north: "Rat King's Hideout", west: "Sewer Control Room" },
             "Rat King's Hideout": { items: '' }
         };
 
@@ -102,7 +102,7 @@
         function handleInput() {
             const input = document.getElementById("user-input").value.trim().toLowerCase().split(' ');
 
-            if (input.length === 2 && (input[0] === 'go' || input[0] === 'get')) {
+            if (input.length >= 2 && (input[0] === 'go' || input[0] === 'get')) {
                 // Check if the action is to move
                 if (input[0] === 'go') {
                     const directionFromUser = input[1];
