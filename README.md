@@ -1,6 +1,3 @@
-Sure, here's a README file for your GitHub repository:
-
-```markdown
 # Sewer Text Adventure Game
 
 Welcome to the Sewer Text Adventure Game! This is a simple text-based adventure game where you navigate through different rooms in a sewer, collecting items to face the final challenge: defeating the Rat King. You need to collect all the items scattered throughout the sewer before encountering the Rat King to win the game.
@@ -72,4 +69,3 @@ For any questions or suggestions, feel free to open an issue or contact me direc
 Enjoy playing the Sewer Text Adventure Game!
 ```
 
-This README provides an overview of the game, instructions on how to play, and details on how to set up and run the game. It also includes sections for development contributions, licensing, and contact information.
